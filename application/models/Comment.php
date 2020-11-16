@@ -3,6 +3,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Comment extends CI_Model {
 
+    /*  DOCU: This function returns all user comments depending on passed message id value.
+        Owner: Karen
+    */
     public function get_comments_from_message_id($message_id) 
     {
         $safe_message_id = $this->security->xss_clean($message_id);
@@ -16,7 +19,9 @@ class Comment extends CI_Model {
         return $this->db->query($query)->result_array();
     }
 
-
+    /*  DOCU: This function validates the required comment input.
+        Owner: Karen
+    */
     public function validate_comment() 
     {
         $this->form_validation->set_error_delimiters('<div>','</div>');
@@ -30,6 +35,9 @@ class Comment extends CI_Model {
         }
     }
 
+    /*  DOCU: This function inserts new comment to the database that depends on a message id.
+        Owner: Karen
+    */
     public function add_comment($post) 
     {
         $query = 'INSERT INTO Comments(user_id, message_id, comment) VALUES (?, ?, ?)';

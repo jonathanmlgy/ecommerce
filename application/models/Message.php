@@ -3,6 +3,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Message extends CI_Model {
     
+    /*  DOCU: This function returns all user messages.
+        Owner: Karen
+    */
     public function get_messages() {
         $query = 'SELECT messages.id AS message_id, message AS message_content, 
         messages.created_at AS message_date, CONCAT(first_name," ",last_name) AS message_sender_name 
@@ -12,7 +15,9 @@ class Message extends CI_Model {
         return $this->db->query($query)->result_array();
     }
 
-
+    /*  DOCU: This function validates the required message input.
+        Owner: Karen
+    */
     public function validate_message() {
         $this->form_validation->set_error_delimiters('<div>','</div>');
         $this->form_validation->set_rules('message_input', 'Message', 'required');
@@ -25,6 +30,9 @@ class Message extends CI_Model {
         }
     }
 
+    /*  DOCU: This function inserts new message from a user to the database.
+        Owner: Karen
+    */
     public function add_message() {
         $query = 'INSERT INTO Messages(user_id, message) VALUES (?, ?)';
         $values = array(

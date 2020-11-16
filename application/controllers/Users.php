@@ -3,6 +3,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Users extends CI_Controller {
     
+    /*  DOCU: This function is triggered by default which displays the sign in/wall page.
+        Owner: Karen
+    */
     public function index() 
     {
         $current_user_id = $this->session->userdata('user_id');
@@ -17,6 +20,9 @@ class Users extends CI_Controller {
 
     }
     
+    /*  DOCU: This function is triggered to display sign in page if there's no user session yet
+        Owner: Karen
+    */
     public function signin() 
     {
         $current_user_id = $this->session->userdata('user_id');
@@ -30,6 +36,9 @@ class Users extends CI_Controller {
         }
     }
 
+    /*  DOCU: This function is triggered to display registration page if there's no user session yet.
+        Owner: Karen
+    */
     public function register() 
     {
         $current_user_id = $this->session->userdata('user_id');
@@ -43,12 +52,20 @@ class Users extends CI_Controller {
         }
     }
 
+    /*  DOCU: This function logs out the current user then goes to sign in page.
+        Owner: Karen
+    */
     public function logoff() 
     {
         $this->session->sess_destroy();
         redirect("/");   
     }
     
+    /*  DOCU: This function is triggered when the sign in button is clicked. 
+        This validates the required form inputs and if user password matches in the database by given email.
+        If no problem occured, user will be routed to the Wall page.
+        Owner: Karen
+    */
     public function process_signin() 
     {
         $result = $this->User->validate_signin_form();
@@ -77,6 +94,12 @@ class Users extends CI_Controller {
 
     }
     
+    /*  DOCU: This function is triggered when the register button is clicked. 
+        This validates the required form inputs then checks if the email is already taken. 
+        If no problem occured, user information will be stored in database 
+        and said user will be routed to the Wall page.
+        Owner: Karen
+    */
     public function process_registration() 
     {
         $email = $this->input->post('email');

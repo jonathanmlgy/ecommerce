@@ -3,12 +3,18 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class User extends CI_Model {
 
+    /*  DOCU: This function retrieves user information filtered by email.
+        Owner: Karen
+    */
     function get_user_by_email($email)
     { 
         $query = "SELECT * FROM Users WHERE email=?";
         return $this->db->query($query, $this->security->xss_clean($email))->result_array()[0];
     }
 
+    /*  DOCU: This function inserts new user info upon registration.
+        Owner: Karen
+    */
     function create_user($user)
     {
         $query = "INSERT INTO Users (first_name, last_name, email, password) VALUES (?,?,?,?)";
@@ -21,6 +27,9 @@ class User extends CI_Model {
         return $this->db->query($query, $values);
     }
 
+    /*  DOCU: This function checks if all required fields were filled up.
+        Owner: Karen
+    */
     function validate_signin_form() {
         $this->form_validation->set_error_delimiters('<div>','</div>');
         $this->form_validation->set_rules('email', 'Email', 'required');
@@ -34,6 +43,9 @@ class User extends CI_Model {
         }
     }
     
+    /*  DOCU: This function contains simple condition to match database record and user input in password.
+        Owner: Karen
+    */
     function validate_signin_match($user, $password) 
     {
         $hash_password = $this->security->xss_clean($password);
@@ -46,6 +58,9 @@ class User extends CI_Model {
         }
     }
 
+    /*  DOCU: This function checks required input fields and if unique email.
+        Owner: Karen
+    */
     function validate_registration($email) 
     {
         $this->form_validation->set_error_delimiters('<div>','</div>');
