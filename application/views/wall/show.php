@@ -10,7 +10,7 @@
     <body>
         <nav>
             <h1>CodingDojo Wall</h1>
-            <p>Welcome <?=$first_names?></p>
+            <p>Welcome <?=$first_name?></p>
             <a href="<?=base_url();?>logoff">Logoff</a>
         </nav>        
         
@@ -18,8 +18,7 @@
 
         <h2>Post a message</h2>
         <form action="<?=base_url();?>wall/add_message" method="post">
-            <input type="hidden" name="<?=$this->security->get_csrf_token_name();?>" 
-                value="<?=$this->security->get_csrf_hash();?>" />
+            <input type="hidden" name="<?=$this->security->get_csrf_token_name();?>" value="<?=$this->security->get_csrf_hash();?>" />
             <textarea name="message_input"></textarea>
 
             <input type="submit" value="Post a message"/>
@@ -35,8 +34,7 @@
                 <p><?=$comment['comment_content']?></p>
 <?php       }
 ?>          <form action="<?=base_url();?>wall/add_comment" method="post" class="comment_form">
-                <input type="hidden" name="<?=$this->security->get_csrf_token_name();?>" 
-                    value="<?=$this->security->get_csrf_hash();?>" />
+                <input type="hidden" name="<?=$this->security->get_csrf_token_name();?>" value="<?=$this->security->get_csrf_hash();?>" />
                 <input type="hidden" name="message_id" value="<?=$message["message_id"]?>"/>
 
                 <label for="comment_input">Post a comment</label>

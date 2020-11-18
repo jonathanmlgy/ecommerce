@@ -75,9 +75,7 @@ class User extends CI_Model {
         else if($this->get_user_by_email($email)) {
             return "Email already taken.";
         }
-
     }
-
 
 }
 

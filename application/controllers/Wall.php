@@ -9,8 +9,6 @@ class Wall extends CI_Controller {
     */
     public function index()  
     {
-        $current_user_firstname = $this->session->userdata('first_name');
-
         $user_messages = $this->Message->get_messages();
         
         $inbox = array();
@@ -20,7 +18,7 @@ class Wall extends CI_Controller {
             $user_message["comments"] = $comments;
             $inbox[] = $user_message;
         }
-        $param = array("first_name"=>$current_user_firstname, "inbox"=>$inbox);
+        $param = array("first_name"=>$this->session->userdata('user_id'), "inbox"=>$inbox);
   
         $this->load->view('wall/show',$param);
     }
