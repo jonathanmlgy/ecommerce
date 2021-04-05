@@ -19,7 +19,7 @@ MAMP is recommended if you are using MAC.
 *Clone repository*
 1. Open your Git bash terminal in the desired folder where you run your php files.
 ```
-git clone https://github.com/kmeigcasan/the_wall_bug.git
+git clone https://github.com/hh-kigcasan/the_wall_bug.git
 ```
 
 *If you are using WAMP*
@@ -27,7 +27,7 @@ git clone https://github.com/kmeigcasan/the_wall_bug.git
 2. Set up a virtual host using wamp. If you don't know how, click the link for 
 instruction and follow the Set up Virtual Host with WAMP.
 [Virtual Host Setup](http://codedecode.co.in/blog/wordpress/set-up-virtual-host-with-wamp/)
-3. Configure the config.php file in ..\application\config and add your virtual host name in `$config['base_url'] = 'http://your-vrtual-host-name';`.
+3. Configure the config.php file in ..\application\config and add your virtual host name in `$config['base_url'] = 'http://your-virtual-host-name';`.
 4. Check and see if your database credentials and the database name is correct in database.php file located in ..\application\config.
 5. Read the instructions on Documentation to fix all bugs and make The Wall fully functional.
 
