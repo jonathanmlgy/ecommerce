@@ -2,6 +2,14 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Users extends CI_Controller {
+
+    public function __construct() 
+    {
+        parent::__construct();
+        // Load the Security Helper in the constructor
+        $this->load->Model('User');
+        $this->load->helper('security');
+    }
     
     /*  DOCU: This function is triggered by default which displays the sign in/wall page.
         Owner: Karen
@@ -9,13 +17,12 @@ class Users extends CI_Controller {
     public function index() 
     {
         $current_user_id = $this->session->userdata('user_id');
-        
         if(!$current_user_id) { 
             $this->load->view('templates/header');
             $this->load->view('users/signin');
         } 
         else {
-            redirect("wall");
+            redirect("/dashboard");
         }
 
     }
@@ -26,7 +33,6 @@ class Users extends CI_Controller {
     public function signin() 
     {
         $current_user_id = $this->session->userdata('user_id');
-        
         if(!$current_user_id) { 
             $this->load->view('templates/header');
             $this->load->view('users/signin');
@@ -68,7 +74,8 @@ class Users extends CI_Controller {
     */
     public function process_signin() 
     {
-        $result = $this->user->validate_signin_form();
+        $this->load->Model('User');
+        $result = $this->User->validate_signin_form();
         if($result != 'success') {
             $this->session->set_flashdata('input_errors', $result);
             redirect("signin");
@@ -77,13 +84,23 @@ class Users extends CI_Controller {
         {
             $email = $this->input->post('email');
             $user = $this->user->get_user_by_email($email);
-            
-            $result = $this->user->validate_signin_match($user, $this->input->post('password'));
-            
+            $password = $this->input->post('password');
+            //var_dump(md5($this->input->post('password')));
+            //var_dump($user['password']);
+            $result = $this->user->validate_signin_match($user, $password);
+            //var_dump($user);
             if($result == "success") 
             {
-                $this->session->set_userdata(array('user_id'=>$user['id'], 'first_name'=>$user['first_name']));            
-                redirect("wall");
+                $this->session->set_userdata(array('user_id'=>$user['user_id'], 'first_name'=>$user['first_name'], 'user_level' => $user['user_level']));          
+                //$this->session->set_userdata(array('user_id'=>$user['user_id'], 'first_name'=>$user['first_name']));         
+                if($user['user_level'] == 9) 
+                {  
+                    redirect("dashboard/admin");
+                } 
+                else if($user['user_level'] == 1) 
+                {
+                    redirect("/dashboard");
+                }   
             }
             else 
             {
@@ -94,17 +111,13 @@ class Users extends CI_Controller {
 
     }
     
-    /*  DOCU: This function is triggered when the register button is clicked. 
-        This validates the required form inputs then checks if the email is already taken. 
-        If no problem occured, user information will be stored in database 
-        and said user will be routed to the Wall page.
-        Owner: Karen
-    */
+
     public function process_registration() 
     {
+        
         $email = $this->input->post('email');
         $result = $this->user->validate_registration($email);
-        
+        #var_dump($result);
         if($result!=null)
         {
             $this->session->set_flashdata('input_errors', $result);
@@ -114,11 +127,62 @@ class Users extends CI_Controller {
         {
             $form_data = $this->input->post();
             $this->user->create_user($form_data);
-
             $new_user = $this->user->get_user_by_email($form_data['email']);
-            $this->session->set_userdata(array('user_id' => $new_user["id"], 'first_name'=>$new_user['first_name']));
+            #var_dump($new_user);
+            #var_dump($new_user['user_id']);
+            $this->session->set_userdata(array('user_id' => $new_user['user_id'], 'first_name'=>$new_user['first_name']));
             
-            redirect("wall");
+            if($new_user['user_level'] == 9) 
+            {  
+                redirect("dashboard/admin");
+            } 
+            else if($new_user['user_level'] == 1) 
+            {
+                redirect("/dashboard");
+            }   
+        }
+    }
+
+    public function edit()
+    {
+        $this->load->view('users/edit');
+    } 
+
+    public function process_edit_profile()
+    {
+        var_dump($this->session->userdata());
+        $email = $this->input->post('email');
+        $result = $this->user->validate_edit_profile($email);
+        var_dump($result);
+        if($result!=null)
+        {
+            $this->session->set_flashdata('input_errors', $result);
+            redirect("/users/edit");
+        }
+        else
+        {
+            $edit_data = array (
+                'email' => $this->input->post('email'),
+                'first_name' => $this->input->post('first_name'),
+                'last_name' => $this->input->post('last_name')
+            );
+            $this->User->edit_profile($edit_data);
+            redirect('/dashboard');
+        }
+    }
+
+    public function process_edit_password()
+    {
+        $result = $this->user->validate_edit_password();
+        if($result!=null)
+        {
+            $this->session->set_flashdata('input_errors', $result);
+            redirect("/users/edit");
+        }
+        else
+        {
+            $this->User->edit_password();
+            redirect('/dashboard');
         }
     }
 

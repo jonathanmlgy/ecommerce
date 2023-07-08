@@ -55,10 +55,10 @@ $route['translate_uri_dashes'] = FALSE;
 
 $route['signin'] = 'users/signin';
 $route['signin/validate'] = 'users/process_signin';
-
 $route['register'] = 'users/register';
 $route['register/validate'] = 'users/process_registration';
-
 $route['logoff'] = 'users/logoff';
+$route['products/new'] = 'products';
+//$route['product/validate'] = 'products/process_new_product';
 
-$route['wall'] = 'wall/wrong_index';
+//$route['wall'] = 'wall/wrong_index';

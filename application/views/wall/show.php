@@ -5,7 +5,7 @@
         <meta name="viewport" content="width=device-width">
         <meta name="description" content="The Wall - Final">
         <meta name="author" content="Karen Marie E. Igcasan">
-        <link rel="stylesheet" href="<?=base_url();?>assets/css/wall_style.css"/>
+        <link rel="stylesheet" href="assets/css/wall_style.css"/>
     </head>
     <body>
         <nav>
@@ -20,7 +20,6 @@
         <form action="<?=base_url();?>wall/add_message" method="post">
             <input type="hidden" name="<?=$this->security->get_csrf_token_name();?>" value="<?=$this->security->get_csrf_hash();?>" />
             <textarea name="message_input"></textarea>
-
             <input type="submit" value="Post a message"/>
         </form>
 <?php   
@@ -35,11 +34,9 @@
 <?php       }
 ?>          <form action="<?=base_url();?>wall/add_comment" method="post" class="comment_form">
                 <input type="hidden" name="<?=$this->security->get_csrf_token_name();?>" value="<?=$this->security->get_csrf_hash();?>" />
-                <input type="hidden" name="message_id" value="message_id"/>
-
+                <input type="hidden" name="message_id" value="<?=$message['message_id']?>"/>
                 <label for="comment_input">Post a comment</label>
-                <textarea name="comment_input"></textarea>               
-
+                <textarea name="comment_input"></textarea>          
                 <input type="submit" value="Post a comment"/>
             </form> 
 <?php   }
